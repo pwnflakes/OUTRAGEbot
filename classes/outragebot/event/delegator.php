@@ -65,6 +65,9 @@ class Delegator
 		
 		$namespace = "Privmsg\\";
 		
+		if($packet->parts[3] == ":".chr(1)."ACTION")
+			return $this->getEventHandler($namespace."ChannelAction");
+		
 		if($packet->payload[0] == Format\Modifiers::CTCP)
 			return $this->getEventHandler($namespace."CTCPRequest");
 		

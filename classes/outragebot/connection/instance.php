@@ -273,10 +273,11 @@ class Instance
 		
 		if(!isset($this->users[$hostmask->nickname]))
 			$this->users[$hostmask->nickname] = new Element\User($this, $hostmask);
+		else
+			$this->users[$hostmask->nickname]->hostmask = $hostmask;
 		
 		return $this->users[$hostmask->nickname];
 	}
-	
 	
 	/**
 	 *	Retrieves a channel from the internal channel cache.
@@ -332,7 +333,7 @@ class Instance
 	 */
 	public function activateScript($script)
 	{
-		$this->scripts[strtolower($script)] = Script\Intrepreter::getInstance()->compile($this, $script);
+		$this->scripts[strtolower($script)] = Script\Interpreter::getInstance()->compile($this, $script);
 		return true;
 	}
 	
@@ -347,6 +348,7 @@ class Instance
 		if(!isset($this->scripts[$script]))
 			return false;
 		
+		$this->scripts[$script]->destruct();
 		unset($this->scripts[$script]);
 		return true;
 	}
